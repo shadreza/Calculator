@@ -1,0 +1,14 @@
+body{
+    margin: 0;
+}
+.calculatorBody{
+    margin: 4rem auto;
+}
+.displayOutput{
+    text-align: right;
+    margin-bottom: 0.5rem;
+    font-size: 20px;
+}
+.footer{
+    margin-top: 0.5rem;
+}
