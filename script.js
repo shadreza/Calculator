@@ -18,6 +18,23 @@ function whichOperator(passedString){
         return 0;
     }
 }
+function calculate(leftOperand , operator , rightOperand){
+    if(operator=='+'){
+        return leftOperand+rightOperand;
+    }
+    else if(operator=='-'){
+        return leftOperand-rightOperand;
+    }
+    else if(operator=='*'){
+        return leftOperand*rightOperand;
+    }
+    else if(operator=='/'){
+        return leftOperand/rightOperand;
+    }
+    else{
+        return "Invalid";
+    }
+}
 function resultOfTheDisplay(){
     if(whatIsInTheDisplay()=='0'){
         return;
@@ -87,13 +104,73 @@ function resultOfTheDisplay(){
                     subUnitArray='';
                 }
                 else{
-                    document.getElementById('output').innerText='Invalid Input : The Last Element Should Be A Number Not ' + stringOfTheDisplay[i+1];
+                    document.getElementById('output').innerText='Invalid Input : The Last Element Should Be A Number Not ' + stringOfTheDisplay[i];
                     return;
                 }
             }
         }
-        return mainUnitArray;
+        if(mainUnitArray.length>1){
+            if(mainUnitArray[0]=="-" && typeof(mainUnitArray[1])=='number'){
+                mainUnitArray[1]*=(-1);
+                mainUnitArray.shift();
+            }
+        }
+        for(let i=0;i<mainUnitArray.length;i++){
+            if(whichOperator(mainUnitArray[i])==1 && (mainUnitArray[i]=='*' || mainUnitArray[i]=='/')){
+                if(i-1>=0 && i+1<mainUnitArray.length){
+                    if(typeof(mainUnitArray[i-1])=='number' && typeof(mainUnitArray[i+1])=='number'){
+                        var resultOfTheThree = calculate(mainUnitArray[i-1],mainUnitArray[i],mainUnitArray[i+1]);
+                        if(resultOfTheThree=="Invalid"){
+                            document.getElementById('output').innerText='Invalid Input';
+                            return;
+                        }
+                        else{
+                            mainUnitArray[i-1]=resultOfTheThree;
+                            mainUnitArray.splice(i,i+2);
+                            console.log('*/',i);
+                            console.log(mainUnitArray);
+                        }
+                    }
+                    else{
+                        document.getElementById('output').innerText='Invalid Input';
+                        return;
+                    }
+                }
+                else{
+                    document.getElementById('output').innerText='Invalid Input';
+                    return;
+                }
+            }
+        }
+        for(let i=0;i<mainUnitArray.length;i++){
+            if(whichOperator(mainUnitArray[i])==1 && (mainUnitArray[i]=='+' || mainUnitArray[i]=='-')){
+                if(i-1>=0 && i+1<mainUnitArray.length){
+                    if(typeof(mainUnitArray[i-1])=='number' && typeof(mainUnitArray[i+1])=='number'){
+                        var resultOfTheThree = calculate(mainUnitArray[i-1],mainUnitArray[i],mainUnitArray[i+1]);
+                        if(resultOfTheThree=="Invalid"){
+                            document.getElementById('output').innerText='Invalid Input';
+                            return;
+                        }
+                        else{
+                            mainUnitArray[i-1]=resultOfTheThree;
+                            mainUnitArray.splice(i,i+2);
+                            console.log('*/',i);
+                            console.log(mainUnitArray);
+                        }
+                    }
+                    else{
+                        document.getElementById('output').innerText='Invalid Input';
+                        return;
+                    }
+                }
+                else{
+                    document.getElementById('output').innerText='Invalid Input';
+                    return;
+                }
+            }
+        }
     } 
+    return mainUnitArray;
 }
 function addingToTheDisplay(passedString){
     if(passedString=='0' && whatIsInTheDisplay()=='0'){
@@ -125,8 +202,9 @@ function clickingButtons(idOfTheClickedButton){
         clearDisplay();
     }
     else if(clickedButtonValue=='='){
-        var res = resultOfTheDisplay();
-        console.log(res);
+        var result = resultOfTheDisplay();
+        console.log(result);
+        // document.getElementById('output').innerText = result;
     }
     else{
         addingToTheDisplay(clickedButtonValue);
