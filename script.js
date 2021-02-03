@@ -1,133 +1,121 @@
-function outputText(){
+function whatIsInTheDisplay(){
     return document.getElementById('output').innerText;
 }
-function setOutputText(data){
-    document.getElementById('output').innerText=data;
+function clearDisplay(){
+    document.getElementById('output').innerText=0;
 }
-document.getElementById('button-0').addEventListener('click',function(){
-    if(outputText()=="0"){
-        return ;
+function isOperator(passedString){
+    if(passedString=='+' || passedString=='-' || passedString=='*' || passedString=='/'){
+        return true;
     }
     else{
-        setOutputText(outputText()+'0');
+        return false;
     }
-})
-document.getElementById('button-1').addEventListener('click',function(){
-    if(outputText()=="0"){
-        setOutputText('1');
-    }
-    else{
-        setOutputText(outputText()+'1');
-    }
-})
-document.getElementById('button-2').addEventListener('click',function(){
-    if(outputText()=="0"){
-        setOutputText('2');
+}
+function resultOfTheDisplay(){
+    if(whatIsInTheDisplay()=='0'){
+        return;
     }
     else{
-        setOutputText(outputText()+'2');
+        var stringOfTheDisplay = whatIsInTheDisplay();
+        var subUnitArray = new Array();
+        var mainUnitArray = new Array();
+        for (let i = 0; i < stringOfTheDisplay.length; i++) {
+            const iteratedValue = stringOfTheDisplay[i];
+            subUnitArray.push(iteratedValue);
+            if(i!=stringOfTheDisplay.length-1 && isOperator(iteratedValue) && isOperator(stringOfTheDisplay[i+1])){
+                
+            }
+        }
     }
-})
-document.getElementById('button-3').addEventListener('click',function(){
-    if(outputText()=="0"){
-        setOutputText('3');
-    }
-    else{
-        setOutputText(outputText()+'3');
-    }
-})
-document.getElementById('button-4').addEventListener('click',function(){
-    if(outputText()=="0"){
-        setOutputText('4');
-    }
-    else{
-        setOutputText(outputText()+'4');
-    }
-})
-document.getElementById('button-5').addEventListener('click',function(){
-    if(outputText()=="0"){
-        setOutputText('5');
+}
+function addingToTheDisplay(passedString){
+    if(passedString=='0' && whatIsInTheDisplay()=='0'){
+        return;
     }
     else{
-        setOutputText(outputText()+'5');
+        if(whatIsInTheDisplay()=='0'){
+            if(passedString>='0' && passedString<='9'){
+                document.getElementById('output').innerText = passedString;
+            }
+            else{
+                if(passedString == '-'){
+                    document.getElementById('output').innerText = passedString;
+                }
+                else{
+                    document.getElementById('output').innerText = whatIsInTheDisplay() +  passedString;
+                }
+            }
+        }
+        else{
+            document.getElementById('output').innerText = whatIsInTheDisplay() +  passedString;
+        }
     }
-})
-document.getElementById('button-6').addEventListener('click',function(){
-    if(outputText()=="0"){
-        setOutputText('6');
+}
+function clickingButtons(idOfTheClickedButton){
+    var clickedButton = document.getElementById(idOfTheClickedButton);
+    var clickedButtonValue = clickedButton.value;
+    if(clickedButtonValue=='AC'){
+        clearDisplay();
     }
-    else{
-        setOutputText(outputText()+'6');
-    }
-})
-document.getElementById('button-7').addEventListener('click',function(){
-    if(outputText()=="0"){
-        setOutputText('7');
-    }
-    else{
-        setOutputText(outputText()+'7');
-    }
-})
-document.getElementById('button-8').addEventListener('click',function(){
-    if(outputText()=="0"){
-        setOutputText('8');
-    }
-    else{
-        setOutputText(outputText()+'8');
-    }
-})
-document.getElementById('button-9').addEventListener('click',function(){
-    if(outputText()=="0"){
-        setOutputText('9');
+    else if(clickedButtonValue=='='){
+        resultOfTheDisplay();
     }
     else{
-        setOutputText(outputText()+'9');
+        addingToTheDisplay(clickedButtonValue);
     }
-})
-document.getElementById('button-.').addEventListener('click',function(){
-    setOutputText(outputText()+'.');
-})
-document.getElementById('button-+').addEventListener('click',function(){
-        setOutputText(outputText()+'+');
-})
-document.getElementById('button--').addEventListener('click',function(){
-        setOutputText(outputText()+'-');
-})
-document.getElementById('button-*').addEventListener('click',function(){
-        setOutputText(outputText()+'*');
-})
-document.getElementById('button-/').addEventListener('click',function(){
-        setOutputText(outputText()+'/');
+}
+document.getElementById('button-AC').addEventListener('click',function(){
+    clickingButtons('button-AC');
 })
 document.getElementById('button-%').addEventListener('click',function(){
-        setOutputText(outputText()+'%');
+    clickingButtons('button-%');
+})
+document.getElementById('button-/').addEventListener('click',function(){
+    clickingButtons('button-/');
+})
+document.getElementById('button-7').addEventListener('click',function(){
+    clickingButtons('button-7');
+})
+document.getElementById('button-8').addEventListener('click',function(){
+    clickingButtons('button-8');
+})
+document.getElementById('button-9').addEventListener('click',function(){
+    clickingButtons('button-9');
+})
+document.getElementById('button-*').addEventListener('click',function(){
+    clickingButtons('button-*');
+})
+document.getElementById('button-4').addEventListener('click',function(){
+    clickingButtons('button-4');
+})
+document.getElementById('button-5').addEventListener('click',function(){
+    clickingButtons('button-5');
+})
+document.getElementById('button-6').addEventListener('click',function(){
+    clickingButtons('button-6');
+})
+document.getElementById('button--').addEventListener('click',function(){
+    clickingButtons('button--');
+})
+document.getElementById('button-1').addEventListener('click',function(){
+    clickingButtons('button-1');
+})
+document.getElementById('button-2').addEventListener('click',function(){
+    clickingButtons('button-2');
+})
+document.getElementById('button-3').addEventListener('click',function(){
+    clickingButtons('button-3');
+})
+document.getElementById('button-+').addEventListener('click',function(){
+    clickingButtons('button-+');
+})
+document.getElementById('button-0').addEventListener('click',function(){
+    clickingButtons('button-0');
+})
+document.getElementById('button-.').addEventListener('click',function(){
+    clickingButtons('button-.');
 })
 document.getElementById('button-=').addEventListener('click',function(){
-    let array = [];
-    var textString = outputText();
-    console.log(textString);
-    var stringToRealMeaning="";
-    for (let i = 0; i < textString.length; i++) {
-        if((textString[i]>='0' && textString[i]<='9') || textString[i]=='.'){
-            stringToRealMeaning+=textString[i];
-        }
-        else if(textString[i]=='+' || textString[i]=='-' || textString[i]=='*' || textString[i]=='/' || textString[i]=='%'){
-            if(stringToRealMeaning.length>0){
-                array.push(parseFloat(stringToRealMeaning));
-            }
-            stringToRealMeaning="";
-            array.push(textString[i]);
-        }
-        if(i==textString.length-1){
-            stringToRealMeaning="";
-            array.push(textString[i]);
-        }
-        console.log(stringToRealMeaning);
-    }
-    for (let i = 0; i < array.length; i++) {
-        console.log(array[i]);
-    }
-})
-document.getElementById('button-AC').addEventListener('click',function(){
-    setOutputText('0');
+    clickingButtons('button-=');
 })
