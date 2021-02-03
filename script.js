@@ -18,6 +18,13 @@ function whichOperator(passedString){
         return 0;
     }
 }
+function clearingIfGurbage(){
+    if(document.getElementById('output').innerText.indexOf('Invalid')>=0  || document.getElementById('output').innerText.indexOf('undefined')>=0){
+        clearDisplay();
+        return true;
+    }
+    return false;
+}
 function calculate(leftOperand , operator , rightOperand){
     if(operator=='+'){
         return leftOperand+rightOperand;
@@ -46,21 +53,20 @@ function resultOfTheDisplay(){
         for (let i = 0; i < stringOfTheDisplay.length; i++) {
             if(i != stringOfTheDisplay.length - 1){
                 if(whichOperator(stringOfTheDisplay[i])==0){
-                    document.getElementById('output').innerText='Invalid Input : Unknown And Undefined ' + stringOfTheDisplay[i] + ' Symbols Are Used!';
-                    return;
+                    return 'Invalid Input : Unknown And Undefined ' + stringOfTheDisplay[i] + ' Symbols Are Used!';
                 }
                 else if(whichOperator(stringOfTheDisplay[i])==1){
                     if(whichOperator(stringOfTheDisplay[i+1])==1){
-                        document.getElementById('output').innerText='Invalid Input : Operators Can Not Be Adjacent';
-                        return;
+                        return 'Invalid Input : Operators Can Not Be Adjacent';
+
                     }
                     else if(whichOperator(stringOfTheDisplay[i+1])==2){
-                        document.getElementById('output').innerText='Invalid Input : Fraction Sign And Operator Can Not Be Adjacent';
-                        return;
+                        return 'Invalid Input : Fraction Sign And Operator Can Not Be Adjacent';
+
                     }
                     else if(whichOperator(stringOfTheDisplay[i+1])==0){
-                        document.getElementById('output').innerText='Invalid Input : Unknown And Undefined ' + stringOfTheDisplay[i+1] + ' Symbols Are Used!';
-                        return;
+                        return 'Invalid Input : Unknown And Undefined ' + stringOfTheDisplay[i+1] + ' Symbols Are Used!';
+
                     }
                     else{
                         mainUnitArray.push(stringOfTheDisplay[i]);
@@ -68,16 +74,16 @@ function resultOfTheDisplay(){
                 }
                 else if(whichOperator(stringOfTheDisplay[i])==2){
                     if(whichOperator(stringOfTheDisplay[i+1])==2){
-                        document.getElementById('output').innerText='Invalid Input : Fraction Signs Can Not Be Adjacent';
-                        return;
+                        return 'Invalid Input : Fraction Signs Can Not Be Adjacent';
+
                     }
                     else if(whichOperator(stringOfTheDisplay[i+1])==1){
-                        document.getElementById('output').innerText='Invalid Input : Fraction Sign And Operator Can Not Be Adjacent';
-                        return;
+                        return 'Invalid Input : Fraction Sign And Operator Can Not Be Adjacent';
+
                     }
                     else if(whichOperator(stringOfTheDisplay[i+1])==0){
-                        document.getElementById('output').innerText='Invalid Input : Unknown And Undefined ' + stringOfTheDisplay[i+1] + ' Symbols Are Used!';
-                        return;
+                        return 'Invalid Input : Unknown And Undefined ' + stringOfTheDisplay[i+1] + ' Symbols Are Used!';
+
                     }
                     else{
                         subUnitArray+=stringOfTheDisplay[i];
@@ -86,8 +92,8 @@ function resultOfTheDisplay(){
                 else{
                     subUnitArray+=stringOfTheDisplay[i];
                     if(whichOperator(stringOfTheDisplay[i+1])==0){
-                        document.getElementById('output').innerText='Invalid Input : Unknown And Undefined ' + stringOfTheDisplay[i+1] + ' Symbols Are Used!';
-                        return;
+                        return 'Invalid Input : Unknown And Undefined ' + stringOfTheDisplay[i+1] + ' Symbols Are Used!';
+
                     }
                     else if(whichOperator(stringOfTheDisplay[i+1])==1){
                         var number = parseFloat(subUnitArray);
@@ -104,8 +110,7 @@ function resultOfTheDisplay(){
                     subUnitArray='';
                 }
                 else{
-                    document.getElementById('output').innerText='Invalid Input : The Last Element Should Be A Number Not ' + stringOfTheDisplay[i];
-                    return;
+                    return 'Invalid Input : The Last Element Should Be A Number Not ' + stringOfTheDisplay[i];
                 }
             }
         }
@@ -120,9 +125,8 @@ function resultOfTheDisplay(){
                 if(i-1>=0 && i+1<mainUnitArray.length){
                     if(typeof(mainUnitArray[i-1])=='number' && typeof(mainUnitArray[i+1])=='number'){
                         var resultOfTheThree = calculate(mainUnitArray[i-1],mainUnitArray[i],mainUnitArray[i+1]);
-                        if(resultOfTheThree=="Invalid"){
-                            document.getElementById('output').innerText='Invalid Input';
-                            return;
+                        if(isNaN(resultOfTheThree)){
+                            return 'Invalid Input';
                         }
                         else{
                             mainUnitArray[i-1]=resultOfTheThree;
@@ -131,13 +135,12 @@ function resultOfTheDisplay(){
                         }
                     }
                     else{
-                        document.getElementById('output').innerText='Invalid Input';
-                        return;
+                        return 'Invalid Input';
+
                     }
                 }
                 else{
-                    document.getElementById('output').innerText='Invalid Input';
-                    return;
+                    return 'Invalid Input';
                 }
             }
         }
@@ -147,8 +150,8 @@ function resultOfTheDisplay(){
                     if(typeof(mainUnitArray[i-1])=='number' && typeof(mainUnitArray[i+1])=='number'){
                         var resultOfTheThree = calculate(mainUnitArray[i-1],mainUnitArray[i],mainUnitArray[i+1]);
                         if(resultOfTheThree=="Invalid"){
-                            document.getElementById('output').innerText='Invalid Input';
-                            return;
+                            return 'Invalid Input';
+    
                         }
                         else{
                             mainUnitArray[i-1]=resultOfTheThree;
@@ -157,18 +160,24 @@ function resultOfTheDisplay(){
                         }
                     }
                     else{
-                        document.getElementById('output').innerText='Invalid Input';
-                        return;
+                        return 'Invalid Input';
                     }
                 }
                 else{
-                    document.getElementById('output').innerText='Invalid Input';
-                    return;
+                    return 'Invalid Input';
                 }
             }
         }
     } 
     return mainUnitArray[0];
+}
+function removingLastEnteredElementFromDisplay(){
+    var stringOfTheDisplay = document.getElementById('output').innerText;
+    stringOfTheDisplay = stringOfTheDisplay.substring(0,stringOfTheDisplay.length-1);
+    if(stringOfTheDisplay==''){
+        stringOfTheDisplay = '0';
+    }
+    document.getElementById('output').innerText=stringOfTheDisplay;
 }
 function addingToTheDisplay(passedString){
     if(passedString=='0' && whatIsInTheDisplay()=='0'){
@@ -194,13 +203,32 @@ function addingToTheDisplay(passedString){
     }
 }
 function clickingButtons(idOfTheClickedButton){
+    clearingIfGurbage();
     var clickedButton = document.getElementById(idOfTheClickedButton);
     var clickedButtonValue = clickedButton.value;
     if(clickedButtonValue=='AC'){
         clearDisplay();
     }
+    else if(clickedButtonValue=='<'){
+        removingLastEnteredElementFromDisplay();
+    }
     else if(clickedButtonValue=='='){
+        if(clearingIfGurbage()){
+            return;
+        }
         var result = resultOfTheDisplay();
+        if(isNaN(result)){
+            document.getElementById('output').innerText = result;
+            return;
+        }
+        var resultString = ''+result;
+        var howManyDecimalPointsOfResultString;
+        if(resultString.indexOf(".")>=0){
+            howManyDecimalPointsOfResultString = resultString.length - resultString.indexOf('.');
+        }
+        if(howManyDecimalPointsOfResultString > 4){
+            result = result.toFixed(4);
+        }
         document.getElementById('output').innerText = result;
     }
     else{
@@ -210,8 +238,8 @@ function clickingButtons(idOfTheClickedButton){
 document.getElementById('button-AC').addEventListener('click',function(){
     clickingButtons('button-AC');
 })
-document.getElementById('button-%').addEventListener('click',function(){
-    clickingButtons('button-%');
+document.getElementById('button-<').addEventListener('click',function(){
+    clickingButtons('button-<');
 })
 document.getElementById('button-/').addEventListener('click',function(){
     clickingButtons('button-/');
