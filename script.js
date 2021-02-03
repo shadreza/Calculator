@@ -4,12 +4,18 @@ function whatIsInTheDisplay(){
 function clearDisplay(){
     document.getElementById('output').innerText=0;
 }
-function isOperator(passedString){
+function whichOperator(passedString){
     if(passedString=='+' || passedString=='-' || passedString=='*' || passedString=='/'){
-        return true;
+        return 1;
+    }
+    else if(passedString=='.'){
+        return 2;
+    }
+    else if(passedString>='0' && passedString<='9'){
+        return 3;
     }
     else{
-        return false;
+        return 0;
     }
 }
 function resultOfTheDisplay(){
@@ -18,16 +24,76 @@ function resultOfTheDisplay(){
     }
     else{
         var stringOfTheDisplay = whatIsInTheDisplay();
-        var subUnitArray = new Array();
+        var subUnitArray = '';
         var mainUnitArray = new Array();
         for (let i = 0; i < stringOfTheDisplay.length; i++) {
-            const iteratedValue = stringOfTheDisplay[i];
-            subUnitArray.push(iteratedValue);
-            if(i!=stringOfTheDisplay.length-1 && isOperator(iteratedValue) && isOperator(stringOfTheDisplay[i+1])){
-                
+            if(i != stringOfTheDisplay.length - 1){
+                if(whichOperator(stringOfTheDisplay[i])==0){
+                    document.getElementById('output').innerText='Invalid Input : Unknown And Undefined ' + stringOfTheDisplay[i] + ' Symbols Are Used!';
+                    return;
+                }
+                else if(whichOperator(stringOfTheDisplay[i])==1){
+                    if(whichOperator(stringOfTheDisplay[i+1])==1){
+                        document.getElementById('output').innerText='Invalid Input : Operators Can Not Be Adjacent';
+                        return;
+                    }
+                    else if(whichOperator(stringOfTheDisplay[i+1])==2){
+                        document.getElementById('output').innerText='Invalid Input : Fraction Sign And Operator Can Not Be Adjacent';
+                        return;
+                    }
+                    else if(whichOperator(stringOfTheDisplay[i+1])==0){
+                        document.getElementById('output').innerText='Invalid Input : Unknown And Undefined ' + stringOfTheDisplay[i+1] + ' Symbols Are Used!';
+                        return;
+                    }
+                    else{
+                        mainUnitArray.push(stringOfTheDisplay[i]);
+                    }
+                }
+                else if(whichOperator(stringOfTheDisplay[i])==2){
+                    if(whichOperator(stringOfTheDisplay[i+1])==2){
+                        document.getElementById('output').innerText='Invalid Input : Fraction Signs Can Not Be Adjacent';
+                        return;
+                    }
+                    else if(whichOperator(stringOfTheDisplay[i+1])==1){
+                        document.getElementById('output').innerText='Invalid Input : Fraction Sign And Operator Can Not Be Adjacent';
+                        return;
+                    }
+                    else if(whichOperator(stringOfTheDisplay[i+1])==0){
+                        document.getElementById('output').innerText='Invalid Input : Unknown And Undefined ' + stringOfTheDisplay[i+1] + ' Symbols Are Used!';
+                        return;
+                    }
+                    else{
+                        subUnitArray+=stringOfTheDisplay[i];
+                    }
+                }
+                else{
+                    subUnitArray+=stringOfTheDisplay[i];
+                    if(whichOperator(stringOfTheDisplay[i+1])==0){
+                        document.getElementById('output').innerText='Invalid Input : Unknown And Undefined ' + stringOfTheDisplay[i+1] + ' Symbols Are Used!';
+                        return;
+                    }
+                    else if(whichOperator(stringOfTheDisplay[i+1])==1){
+                        var number = parseFloat(subUnitArray);
+                        mainUnitArray.push(number);
+                        subUnitArray='';
+                    }
+                }
+            }
+            else{
+                if(whichOperator(stringOfTheDisplay[i])==3){
+                    subUnitArray+=stringOfTheDisplay[i];
+                    var number = parseFloat(subUnitArray);
+                    mainUnitArray.push(number);
+                    subUnitArray='';
+                }
+                else{
+                    document.getElementById('output').innerText='Invalid Input : The Last Element Should Be A Number Not ' + stringOfTheDisplay[i+1];
+                    return;
+                }
             }
         }
-    }
+        return mainUnitArray;
+    } 
 }
 function addingToTheDisplay(passedString){
     if(passedString=='0' && whatIsInTheDisplay()=='0'){
@@ -59,7 +125,8 @@ function clickingButtons(idOfTheClickedButton){
         clearDisplay();
     }
     else if(clickedButtonValue=='='){
-        resultOfTheDisplay();
+        var res = resultOfTheDisplay();
+        console.log(res);
     }
     else{
         addingToTheDisplay(clickedButtonValue);
