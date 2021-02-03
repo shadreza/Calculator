@@ -126,9 +126,8 @@ function resultOfTheDisplay(){
                         }
                         else{
                             mainUnitArray[i-1]=resultOfTheThree;
-                            mainUnitArray.splice(i,i+2);
-                            console.log('*/',i);
-                            console.log(mainUnitArray);
+                            mainUnitArray.splice(i,2);
+                            i--;
                         }
                     }
                     else{
@@ -153,9 +152,8 @@ function resultOfTheDisplay(){
                         }
                         else{
                             mainUnitArray[i-1]=resultOfTheThree;
-                            mainUnitArray.splice(i,i+2);
-                            console.log('*/',i);
-                            console.log(mainUnitArray);
+                            mainUnitArray.splice(i,2);
+                            i--;
                         }
                     }
                     else{
@@ -170,7 +168,7 @@ function resultOfTheDisplay(){
             }
         }
     } 
-    return mainUnitArray;
+    return mainUnitArray[0];
 }
 function addingToTheDisplay(passedString){
     if(passedString=='0' && whatIsInTheDisplay()=='0'){
@@ -203,8 +201,7 @@ function clickingButtons(idOfTheClickedButton){
     }
     else if(clickedButtonValue=='='){
         var result = resultOfTheDisplay();
-        console.log(result);
-        // document.getElementById('output').innerText = result;
+        document.getElementById('output').innerText = result;
     }
     else{
         addingToTheDisplay(clickedButtonValue);
